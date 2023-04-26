@@ -8,7 +8,7 @@ routes.get("/authors",authorsController.list);
 
 routes.get("/authors/:id",authorsController.getById);
 
-routes.post("/authors",authorsController.create);
+routes.post("/authors", authorsController.create);
 
 routes.put("/authors/:id",authorsController.update);
 

@@ -1,5 +1,7 @@
 const uuid = require('uuid');
 
+const {generateHash} = require('../utils/hashProvider');
+
 const authors = [
     {
         id: "fb35024b-cba2-4bcb-a8ea-f811d5ce37eb",
@@ -40,7 +42,7 @@ const getById = (request,response) =>{
 
 };
 
-const create = (request,response) =>{
+const create = async (request,response) =>{
 
     const {name, biography, email, password} = request.body;
 
@@ -49,6 +51,8 @@ const create = (request,response) =>{
     const createdAt = new Date();
 
     const modifiedAt = new Date();
+
+    const hashedPassoword = await generateHash(password);
 
     if(authors.find((a) =>a.email === email)){
         return response.status(400).json({
@@ -62,7 +66,7 @@ const create = (request,response) =>{
         ,name
         ,biography
         ,email
-        ,password
+        ,password: hashedPassoword
         ,createdAt
         ,modifiedAt
     }
@@ -126,6 +130,7 @@ module.exports = {
     getById,
     create,
     update,
-    remove
+    remove,
+    authorDatabase: authors
 
 }
