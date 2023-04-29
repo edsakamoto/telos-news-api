@@ -8,7 +8,7 @@ const authors = [
         name: "john",
         biography: "Doees",
         email: "john@example.com",
-        password: "1234",
+        password: "$2a$08$bK8KGkf.cRKuInp7DrmRH.T/bbLBjpnqrhyQIYp99csukt1LgMVYy",
         createdAt: new Date(),
         modifiedAt: new Date()
     }
@@ -77,12 +77,12 @@ const create = async (request,response) =>{
 
 };
 
-const update = (request,response) =>{
+const update = async (request,response) =>{
     const {id} = request.params;
 
     const {name, biography, email, password } = request.body;
 
-    const modifiedAt = new Date();
+   // const modifiedAt = new Date();
 
     const authorIndex = authors.findIndex((a) => a.id === id);
     
@@ -96,9 +96,14 @@ const update = (request,response) =>{
         ...authors[authorIndex]
         ,name
         ,biography
-        ,email
-        ,password
-        ,modifiedAt
+        ,email        
+        ,modifiedAt: new Date()
+    }
+
+    if(password){
+        authorUpdated.password = await generateHash(password);
+    } else {
+        authorUpdated.password = authors[authorIndex].password;
     }
 
     authors[authorIndex] = authorUpdated;
@@ -131,6 +136,6 @@ module.exports = {
     create,
     update,
     remove,
-    authorDatabase: authors
+    authorDatabase: authors,
 
 }

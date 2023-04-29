@@ -34,7 +34,7 @@ const verifyAuthenticate = (request, response, next) =>{
 
         request.user = decoded;
 
-        return next;
+        return next();
     })
 
 };

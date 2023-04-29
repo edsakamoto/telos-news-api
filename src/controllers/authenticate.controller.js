@@ -26,13 +26,16 @@ const login = async(request,response) =>{
         return response.status(400).json(loginErrorMessage);
     }
 
+    const authorLogged = {... author }; //criando um outro objeto com inf. do author
+
     const token = jwt.sign(author, JWT_SECRET, {
         expiresIn: '1h'
     });    
 
-    delete author.password;
+    //delete author.password
+    delete authorLogged.password;
 
-    return response.json({...author,token});
+    return response.json({...authorLogged,token});
 
 };
 
